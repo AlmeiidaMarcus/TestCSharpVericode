@@ -1,8 +1,10 @@
 using NUnit.Framework;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Edge;
+using OpenQA.Selenium.Chrome;
 using SpecFlowProject1.Support;
 using TechTalk.SpecFlow;
+using OpenQA.Selenium.Support.UI;
+using System;
 
 namespace SpecFlowProject1.StepDefinitions
 {
@@ -11,19 +13,20 @@ namespace SpecFlowProject1.StepDefinitions
     {
         private IWebDriver driver;
         private ScreenshotHelper _screenshotHelper;
-        IWebDriver edgeDriver = WebDriverFactory.CreateWebDriver(BrowserType.Edge);
+        //IWebDriver edgeDriver = WebDriverFactory.CreateWebDriver(BrowserType.Edge);
 
         [Given(@"Eu acesso o site dos correios")]
         public void GivenEuAcessoOSiteDosCorreios()
         {
+            
             // Verifica navegador
-            driver = WebDriverFactory.CreateWebDriver(BrowserType.Edge);
-
+            // driver = WebDriverFactory.CreateWebDriver(BrowserType.Chrome);
+            driver = new ChromeDriver();
             // Captura evidência do teste
             _screenshotHelper = new ScreenshotHelper(driver);
 
             // Configura o driver do navegador
-            driver = new EdgeDriver();
+            //driver = new EdgeDriver();
             driver.Manage().Window.Maximize();
 
             // Acessando a página dos Correios
@@ -31,16 +34,20 @@ namespace SpecFlowProject1.StepDefinitions
         }
 
         [When(@"Eu procuro pelo CEP ""(.*)""")]
+        [Obsolete]
         public void WhenEuProcuroPeloCEP(string cep)
         {
-            // Busca o campo CEP
-            IWebElement campoBuscaCEP = driver.FindElement(By.Id("id=\"relaxation\""));
-
+            // Aguarde até que o campo de busca esteja visível e clicável
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            IWebElement campoBuscaCEP = wait.Until(ExpectedConditions.ElementExists(By.CssSelector("div.card-mais-acessados:nth-child(4) > form:nth-child(1) > div:nth-child(3)")));
+            
+            campoBuscaCEP.Click();
+            
             // Limpa o campo de busca, se necessário
             campoBuscaCEP.Clear();
 
             // Preenche o campo CEP com o valor do parâmetro
-            campoBuscaCEP.SendKeys(cep);
+            campoBuscaCEP.SendKeys("80700000");
 
             // Printscreen
             _screenshotHelper.TakeScreenshot("WhenEuProcuroPeloCEP");
@@ -55,14 +62,14 @@ namespace SpecFlowProject1.StepDefinitions
         [Then(@"Confirmo que o CEP não existe")]
         public void ThenConfirmoQueOCEPNaoExiste()
         {
-            // Verifica se a mensagem de erro está visível
-            IWebElement mensagemErro = driver.FindElement(By.CssSelector("#mensagem-resultado"));
+            IWebElement resultadoCEP = driver.FindElement(By.Id("id=\"mensagem-resultado-alerta\""));
+            Assert.IsTrue(resultadoCEP.Displayed);
 
             // Printscreen
             _screenshotHelper.TakeScreenshot("ThenConfirmoQueOCEPNaoExiste");
 
             // Assert da mensagem de erro
-            Assert.IsTrue(mensagemErro.Displayed);
+            Assert.IsTrue(resultadoCEP.Displayed);
         }
 
         [Then(@"Eu volto para a tela inicial")]
@@ -77,10 +84,10 @@ namespace SpecFlowProject1.StepDefinitions
 
 
         [Given(@"Eu procuro pelo CEP Correto")]
-        public void WhenEuProcuroPeloCEP(decimal p0)
+        public void WhenEuProcuroPeloCEP()
         {
             // Busca o campo de busca por CEP
-            IWebElement campoBuscaCEP = driver.FindElement(By.Id("id=\"relaxation\""));
+            IWebElement campoBuscaCEP = driver.FindElement(By.CssSelector("div.card-mais-acessados:nth-child(4) > form:nth-child(1) > div:nth-child(3)"));
 
             // Preencha o campo com o CEP 01013-001
             campoBuscaCEP.SendKeys("01013-001");

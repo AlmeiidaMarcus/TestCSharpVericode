@@ -1,4 +1,6 @@
 ﻿using OpenQA.Selenium;
+using System;
+using System.IO;
 
 namespace SpecFlowProject1.Support
 {
