@@ -1,0 +1,60 @@
+using Google.Protobuf.WellKnownTypes;
+using System;
+using RestSharp;
+
+class Captcha
+{
+    static void Main()
+{
+    string apiKey = "cc67231b3ca549558061917fa76785b7";
+    string captchaId = SolveCaptcha(apiKey, "https://rastreamento.correios.com.br/core/securimage/securimage_show.php");
+
+    if (!string.IsNullOrEmpty(captchaId))
+    {
+        // Aguarde algum tempo para o serviço resolver o CAPTCHA (pode demorar)
+        System.Threading.Thread.Sleep(TimeSpan.FromSeconds(30));
+
+        // Verifique o resultado do CAPTCHA
+        string captchaResult = GetCaptchaResult(apiKey, captchaId);
+        Console.WriteLine($"Resultado do CAPTCHA: {captchaResult}");
+    }
+    else
+    {
+        Console.WriteLine("Não foi possível enviar o CAPTCHA para resolução.");
+    }
+}
+
+static string SolveCaptcha(string apiKey, string captchaUrl)
+{
+    RestClient client = new RestClient("http://2captcha.com/in.php");
+    RestRequest request = new RestRequest();
+
+    request.AddParameter("key", apiKey);
+    request.AddParameter("method", "base64");
+    request.AddParameter("json", "1");
+    request.AddParameter("body", Convert.ToBase64String(System.IO.File.ReadAllBytes(captchaUrl)));
+
+    RestResponse response = client.Get(request);
+    string responseBody = response.Content;
+
+    if (responseBody.Contains("OK|"))
+    {
+        return responseBody.Split('|')[1];
+    }
+
+    return null;
+}
+
+public static string GetCaptchaResult(string apiKey, string captchaId)
+{
+    RestClient client = new RestClient($"http://2captcha.com/res.php?key={apiKey}&action=get&id={captchaId}");
+    RestResponse response = client.Get(new RestRequest());
+
+    return response.Content;
+}
+
+    public internal string SolveCaptcha(string apiKey, string v)
+    {
+        throw new NotImplementedException();
+    }
+}
