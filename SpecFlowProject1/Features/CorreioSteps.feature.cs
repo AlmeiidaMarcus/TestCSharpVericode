@@ -161,7 +161,7 @@ this.FeatureBackground();
  testRunner.Given("Eu acesso o site dos correios", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 19
- testRunner.When("Eu procuro pelo CEP \"\"(.*)\"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Eu procuro pelo CEP Correto", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 20
  testRunner.Then("Confirmo que o resultado é \"Rua Quinze de Novembro, São Paulo/SP\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");

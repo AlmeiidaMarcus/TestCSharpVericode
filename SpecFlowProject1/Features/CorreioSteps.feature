@@ -16,7 +16,7 @@ Scenario: Procurar CEP inexistente
 
 Scenario: Procurar CEP válido
 	Given Eu acesso o site dos correios
-	When Eu procuro pelo CEP ""(.*)""
+	When Eu procuro pelo CEP Correto
 	Then Confirmo que o resultado é "Rua Quinze de Novembro, São Paulo/SP"
 	And Eu volto para a tela inicial
 

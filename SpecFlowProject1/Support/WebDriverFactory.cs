@@ -2,9 +2,13 @@
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Firefox;
+using OpenQA.Selenium.Interactions;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
+using TechTalk.SpecFlow;
 
 public enum BrowserType
 {
@@ -131,5 +135,11 @@ public class WebDriverFactory
             Console.WriteLine($"Failed to download {browserType} driver: {ex.Message}");
             return false;
         }
+    }
+    public class AberturaDeAbaSteps
+    {
+        private IWebDriver driver;
+        private string originalWindowHandle;
+        private List<string> allWindowHandles;
     }
 }

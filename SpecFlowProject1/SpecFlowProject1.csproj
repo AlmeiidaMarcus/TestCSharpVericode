@@ -8,8 +8,10 @@
     <PackageReference Include="Cucumber.Messages" Version="21.0.1" />
     <PackageReference Include="CucumberExpressions.SpecFlow.3-9" Version="1.0.7" />
     <PackageReference Include="Gherkin" Version="26.0.3" />
+    <PackageReference Include="Microsoft.ApplicationInsights.JavaScript" Version="1.0.20-build00666" />
     <PackageReference Include="Microsoft.Edge.SeleniumTools" Version="3.141.3" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
+    <PackageReference Include="RestSharp" Version="110.2.1-alpha.0.11" />
     <PackageReference Include="Selenium.Essentials" Version="1.0.5.16" />
     <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="116.0.5845.9600" />
     <PackageReference Include="Selenium.WebDriver.GeckoDriver" Version="0.33.0" />
